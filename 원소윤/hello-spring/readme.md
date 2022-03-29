@@ -41,5 +41,20 @@ cmd창에서 빌드를하고, 만들어진 빌드 파일\lib 에서
 배포할때도 이 파일만 올려서 실행하면 된다고 하니 Good ~  
 
 ### 스프링 웹 개발 기초
+#### MVC
+- **MVC : Model, View, Controller** 
+- Django와 비교해보자. (장고가 익숙해서..)  
+장고는 MTV 패턴 (Model Template View) 을 가진다.  
+- MVC의 Controller가 Django의 View이고,  
+- MVC의 View가 Django의 Template이다.  
 
+`http://localhost:8080/hello-mvc?name=spring!`  
+이런 식으로 GET방식의 경우 name 값을 spring!으로 동적으로 넘겨줄 수 있다.  
 
+#### API
+@ResponseBody 를 이용해 HTTP 바디 부분에 데이터를 직접 넣겠다고 명시  
+여기에 문자가 아니라 객체를 넘겨주면 기본 값으로, json 형식으로 반환하자고 되어있다.  
+json은 key:value 형태를 가졌다.  
+좀 더 자세히 말하자면 뷰 리졸버 대신 HttpMessageConverter가 동작하는 것이다.  
+그 안에서도 String이면 StringConverter, 객체면 JsonConverter..
+이렇게 사용할 경우 view 부분이 없어도 된다.
