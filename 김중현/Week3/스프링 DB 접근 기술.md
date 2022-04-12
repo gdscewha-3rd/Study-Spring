@@ -434,8 +434,8 @@ public class SpringConfig {
 
 ### JPA
 > JPA는 기존의 반복되는 코드는 물론, SQL문까지 직접 만들어 실행해준다.
-> 따라서, JPA를 사용하면 SQL과 데이터 중심 설계에서 객체 중심의 설계로
- 패러다임 전환을 이룰 수 있다.
+> 따라서, JPA를 사용하면 SQL과 데이터 중심 설계에서 객체 중심의 설계로 <br>
+> 패러다임 전환을 이룰 수 있다.
 
 - **JPA**는 객체와 `ORM(Object Relational Mapping)`이라는 기술이다.
 - `ORM`: object와 relational database table을 mapping <br>
@@ -553,3 +553,38 @@ public class SpringConfig {
 <br>
 
 ### 스프링 데이터 JPA
+> 스프링 데이터 JPA를 사용하면 리포지토리에 구현 클래스 없이 인터페이스만으로 개발을 완료할 수 있다. <br>
+> 또한, 기본 CRUD 기능 등도 모두 제공되어 따로 구현할 필요가 없다.
+
+
+**repository/SpringDataJpaMemberRepository**
+```java
+package hello.hellospring.repository;
+
+import hello.hellospring.domain.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface SpringDataJpaMemberRepository extends JpaRepository<Member, Long>, MemberRepository {
+
+    //JPQL: select m from Member m where m.name = ?
+    @Override
+    Optional<Member> findByName(String name);
+}
+```
+- 스프링 데이터 JPA가 `SpringDataJpaMemberRepository`의 구현체를 자동으로 만들어 스프링 빈에 등록해준다.
+- `JpaRepository`에 save, findById, findAll, 등록/수정/삭제/조회 등등 기본적인 것들이 다 만들어져 있고, 가져다 쓰기만 하면 되는 것이다. <br>
+<br>
+
+**스프링 데이터 JPA가 제공하는 기능**
+
+<img width="500" alt="스크린샷 2022-04-13 오전 1 26 27" src="https://user-images.githubusercontent.com/80838501/163009690-0bbf7192-0f39-409c-b1e6-54982583d5ad.png">
+
+<br>
+<br>
+
+```
+순수 Jdbc → 스프링 JdbcTemplate(반복되는 코드가 많이 줄지만 SQL을 직접 작성해야 한다) → JPA(쿼리를 작성할 필요가 없다)
+→ 스프링 데이터 JPA (구현 클래스 없이 인터페이스만으로 개발이 끝난다)
+```
