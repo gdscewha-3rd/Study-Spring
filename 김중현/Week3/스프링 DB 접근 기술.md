@@ -428,6 +428,128 @@ public class SpringConfig {
     }
 }
 ```
+<br>
+<br>
+<br>
 
 ### JPA
+> JPA는 기존의 반복되는 코드는 물론, SQL문까지 직접 만들어 실행해준다.
+> 따라서, JPA를 사용하면 SQL과 데이터 중심 설계에서 객체 중심의 설계로
+ 패러다임 전환을 이룰 수 있다.
+
+- **JPA**는 객체와 `ORM(Object Relational Mapping)`이라는 기술이다.
+- `ORM`: object와 relational database table을 mapping <br>
+→ mapping은 annotation으로 한다.
+<br>
+<br>
+
+**JPA 엔티티 매핑**
+```java
+@Entity
+public class Member {
+
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String name;
+  ...
+```
+→ annotation을 달아 DB와 mapping을 해준다.
+<br>
+<br>
+
+
+**repository/JpaMemberRepository**
+```java
+public class JpaMemberRepository implements MemberRepository{
+    
+   private final EntityManager em;
+
+   public JpaMemberRepository(EntityManager em) {
+       this.em = em;
+   }
+
+    @Override
+    public Member save(Member member) {
+        em.persist(member); //JPA가 insert query 만들어서 DB에 넣고, setId까지 해준다.
+        return member;
+    }
+
+    @Override
+    public Optional<Member> findById(Long id) {
+        Member member = em.find(Member.class, id); //조회할 타입과 식별자 pk(primary key)값 넣어주기
+        return Optional.ofNullable(member);
+    }
+
+    @Override
+    public Optional<Member> findByName(String name) {
+        List<Member> result = em.createQuery("select m from Member m where m.name = :name", Member.class)
+                .setParameter("name", name)
+                .getResultList();
+        return result.stream().findAny();
+    }
+
+    public List<Member> findAll() {
+        return em.createQuery("select m from Member m", Member.class) //member 엔티티를 조회해 객체 자체(m)를 select
+                .getResultList();
+    }
+}
+```
+→ JPA는 `EntityManager`로 모든 것이 동작한다. 따라서 JPA를 사용하러면 외부로부터 EntityManager를 주입 받아야 한다. <br>
+→ JPQL: 객체를 대상으로 쿼리를 날리는 것. SQL로 번역된다.
+<br>
+<br>
+
+**MemberService**
+```java
+@Transactional
+public class MemberService {}
+```
+→ 스프링은 해당 클래스의 메서드를 실행할 때 트랜잭션을 시작하고, 메서드가 정상 종료되면 트랜잭션을 커밋한다. <br>
+  만약 런타임 예외가 발생하면 롤백한다.
+<br>
+<br>
+
+**service/SpringConfig**
+```java
+package hello.hellospring;
+
+import hello.hellospring.repository.JpaMemberRepository;
+import hello.hellospring.repository.MemberRepository;
+import hello.hellospring.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.persistence.EntityManager;
+import javax.sql.DataSource;
+
+@Configuration
+public class SpringConfig {
+
+    private EntityManager em;
+
+    @Autowired
+    public SpringConfig(EntityManager em) { //DI
+        this.em = em;
+    }
+
+    @Bean
+    public MemberService memberService() {
+        return new MemberService(memberRepository());
+    }
+
+    @Bean
+    public MemberRepository memberRepository() {
+
+        // return new MemoryMemberRepository();
+        // return new JdbcMemberRepository(dataSource);
+        // return new JdbcTemplateMemberRepository(dataSource);
+        return new JpaMemberRepository(em); //교체
+    }
+}
+```
+<br>
+<br>
+<br>
+
 ### 스프링 데이터 JPA
