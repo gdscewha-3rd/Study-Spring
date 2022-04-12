@@ -23,6 +23,220 @@ insert into member(name) values('spring2');
 <br>
 
 ### 순수 JDBC
+> Application을 DB와 연동해, application에서 저장하는 것이 DB에 insert query를 날려서 데이터를 넣고 빼는 것을 고대의 방식으로 구현해보자
+
+- 옛날에는 이렇게 했구나하고 참고만 하자.
+
+**src/main/repository/jdbcMemberRepository**
+```java
+package hello.hellospring.repository;
+
+import hello.hellospring.domain.Member;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class JdbcMemberRepository implements MemberRepository {
+    private final DataSource dataSource;
+
+    public JdbcMemberRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+
+    }
+
+    @Override
+    public Member save(Member member) {
+        String sql = "insert into member(name) values(?)";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql,
+                    Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, member.getName());
+            pstmt.executeUpdate();
+            rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                member.setId(rs.getLong(1));
+            } else {
+                throw new SQLException("id 조회 실패");
+            }
+            return member;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    @Override
+    public Optional<Member> findById(Long id) {
+        String sql = "select * from member where id = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, id);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getLong("id"));
+                member.setName(rs.getString("name"));
+                return Optional.of(member);
+            } else {
+                return Optional.empty();
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    @Override
+    public List<Member> findAll() {
+        String sql = "select * from member";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            List<Member> members = new ArrayList<>();
+            while (rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getLong("id"));
+                member.setName(rs.getString("name"));
+                members.add(member);
+            }
+            return members;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    @Override
+    public Optional<Member> findByName(String name) {
+        String sql = "select * from member where name = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getLong("id"));
+                member.setName(rs.getString("name"));
+                return Optional.of(member);
+            }
+
+            return Optional.empty();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    private Connection getConnection() {
+        return DataSourceUtils.getConnection(dataSource);
+    }
+
+    private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (conn != null) {
+                close(conn);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void close(Connection conn) throws SQLException {
+        DataSourceUtils.releaseConnection(conn, dataSource);
+    }
+}
+```
+<br>
+
+**service/SpringConfig**
+```java
+@Configuration
+public class SpringConfig {
+
+    private DataSource dataSource;
+
+    @Autowired
+    public SpringConfig(DataSource dataSource) { //DI
+        this.dataSource = dataSource;
+    }
+
+    @Bean
+    public MemberService memberService() {
+        return new MemberService(memberRepository());
+    }
+
+    @Bean
+    public MemberRepository memberRepository() {
+
+        // return new MemoryMemberRepository();
+        return new JdbcMemberRepository(dataSource); //대체
+    }
+}
+```
+→ 메모리에 저장하는 `MemoryMemberRepository` 대신 `JdbcMemberRepository`를 만들어 DB로 대체한다. <br>
+→ `DataSource`는 데이터베이스 커넥션을 획득할 때 사용하는 객체. 스프링 부트는 데이터베이스 커넥션 정보를 바탕으로 DataSource를 생성하고<br>
+   스프링 빈으로 만들기 때문에, DI(Dependency Injection)를 받을 수 있다.
+<br>
+<br>
+   
+**스프링 설정 상태**
+
+<img width="650" alt="스크린샷 2022-04-12 오후 6 22 40" src="https://user-images.githubusercontent.com/80838501/162927564-92f6be9a-8969-49f5-8ced-224b68f8422d.png">
+
+→ 기존에 memory 버전의 memberRepository를 스프링 빈으로 등록을 했다면 이제 jdbc 버전의 memberRepository를 등록했다. <br>
+  이외에 아무것도 수정하지 않아도 메모리 대신 DB를 사용할 수 있다. <br>
+**→ 스프링의 DI(Dependencies Injection)를 사용하면 기존 코드를 전혀 바꾸지 않고, 설정만으로 구현 클래스를 변경할 수 있다.**
+<br>
+
+
+```
+개방•폐쇄 원칙(OCP, Open-Closed Principle)
+다형성의 개념을 잘 활용하면, 기능을 완전히 변경을 해도 application 전체를 수정할 필요가 없다. (물론 조립하는 부분은 코드 변경이 불가피함)
+```
+<br>
+<br>
+<br>
+
 ### 스프링 통합 테스트
 ### 스프링 JdbcTemplate
 ### JPA
