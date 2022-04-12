@@ -218,7 +218,19 @@ public class SpringConfig {
    스프링 빈으로 만들기 때문에, DI(Dependency Injection)를 받을 수 있다.
 <br>
 <br>
-   
+<br>
+
+**실행 화면**
+
+<img width="105" alt="스크린샷 2022-04-12 오후 6 58 11" src="https://user-images.githubusercontent.com/80838501/162934691-e2e90794-07bb-4687-9b5d-5261801dfa1b.png">
+
+→ 페이지에서 JPA로 회원가입을 하면 데이터가 추가되고,
+<br>
+
+<img width="227" alt="스크린샷 2022-04-12 오후 6 58 35" src="https://user-images.githubusercontent.com/80838501/162934850-8fef8863-04ef-4a46-acf6-6ef65d31e2b0.png">
+
+→ 페이지에서 추가한 회원 정보가 DB에도 성공적으로 적용된다.
+
 **스프링 설정 상태**
 
 <img width="650" alt="스크린샷 2022-04-12 오후 6 22 40" src="https://user-images.githubusercontent.com/80838501/162927564-92f6be9a-8969-49f5-8ced-224b68f8422d.png">
