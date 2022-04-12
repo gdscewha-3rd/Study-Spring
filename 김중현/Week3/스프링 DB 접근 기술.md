@@ -250,6 +250,70 @@ public class SpringConfig {
 <br>
 
 ### 스프링 통합 테스트
+> 스프링 컨테이너와 DB까지 연결한 통합 테스트를 구현해보자!
+<br>
+
+**src/test/service/MemberServiceIntegrationTest**
+```java
+package hello.hellospring.service;
+
+import hello.hellospring.domain.Member;
+import hello.hellospring.repository.MemberRepository;
+import hello.hellospring.repository.MemoryMemberRepository;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@Transactional
+class MemberServiceIntegrationTest {
+
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
+
+    @Test
+    void 회원가입() {
+        //given: 무엇이 주어졌고
+        Member member = new Member();
+        member.setName("spring");
+
+        //when: 무엇을 검증할 것인지
+        Long saveId = memberService.join(member);
+
+        //then
+        Member findMember = memberService.findOne(saveId).get();
+        assertThat(member.getName()).isEqualTo(findMember.getName());
+    }
+
+    @Test
+    public void 중복_회원_예외() {
+        //given
+        Member member1 = new Member();
+        member1.setName("spring");
+
+        Member member2 = new Member();
+        member2.setName("spring");
+
+        //when
+        memberService.join(member1);
+        IllegalStateException e = Assertions.assertThrows(IllegalStateException.class, () -> memberService.join(member2));
+
+        //then
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+    }
+}
+```
+→ `@SpringBootTest`: 스프링 컨테이너와 테스트를 함께 실행해준다. <br>
+  `@Transactional`: 테스트 시작 전에 transaction을 시작하고, 테스트 완료 후에 항상 롤백해준다. 그러면 DB에 테스트로 인한 데이터가 남지 않아<br>
+   다음 테스트에 영향을 주지 않는다.
+<br>
+<br>
+<br>
+
 ### 스프링 JdbcTemplate
 ### JPA
 ### 스프링 데이터 JPA
