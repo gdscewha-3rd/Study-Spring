@@ -58,3 +58,49 @@ public class MemberService {
 <br>
 
 ### AOP 적용
+> 공통 관심 사항과 핵심 관심 사항 분리
+
+<img width="575" alt="스크린샷 2022-05-03 오후 5 45 03" src="https://user-images.githubusercontent.com/80838501/166426319-645e2acc-9fda-42f2-b83f-b0b7472ff111.png">
+
+→ `TimeTraceAop`라는 클래스를 새로 만들어 시간 측정 로직을 작성한다. 그리고 원하는 곳에 공통 관심 사항을 적용
+<br>
+<br>
+
+**TimeTraceAop**
+```java
+@Component 
+@Aspect
+public class TimeTraceAop { //시간 측정 로직 작성
+    @Around("execution(* hello.hellospring..*(..))")
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        System.out.println("START: " + joinPoint.toString());
+        try {
+            return joinPoint.proceed();
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("END: " + joinPoint.toString()+ " " + timeMs + "ms");
+        }
+    }
+}
+```
+**→ AOP를 통한 해결**
+- 핵심 관심 사항(회원 가입, 회원 조회)과 공통 관심 사항(시간 측정)을 분리
+- 핵심 관심 사항을 깔끔하게 유지할 수 있고, 변경이 필요할 시 공통 관심 사항 로직만 변경
+- 시간 측정 로직을 별도의 공통 로직으로 생성
+- 원하는 적용 대상을 쉽게 선택 가능
+<br>
+<br>
+
+**AOP 동작 방식**
+- AOP 적용 전
+<img width="575" alt="스크린샷 2022-05-03 오후 5 55 51" src="https://user-images.githubusercontent.com/80838501/166427693-1c589235-fcd9-4883-a1f5-3eac696cd704.png">
+
+→ 의존관계에 따라 호출
+
+- AOP 적용 후 
+<img width="575" alt="스크린샷 2022-05-03 오후 5 56 20" src="https://user-images.githubusercontent.com/80838501/166427708-e30f6f32-9785-4cc3-afbd-c032d195a7f5.png">
+
+→ 가짜 스프링 빈(프록시)이 생성되고, memberController는 가짜 memberService(프록시)를, memberService는 가짜 memberRepository(프록시)를<br>
+  호출
