@@ -104,5 +104,5 @@ public class TimeTraceAop { //시간 측정 로직 작성
 - AOP 적용 후 
 <img width="575" alt="스크린샷 2022-05-03 오후 5 56 20" src="https://user-images.githubusercontent.com/80838501/166427708-e30f6f32-9785-4cc3-afbd-c032d195a7f5.png">
 
-→ 가짜 스프링 빈(프록시)이 생성되고, memberController는 가짜 memberService(프록시)를, memberService는 가짜 memberRepository(프록시)를<br>
-  호출
+→ 가짜 스프링 빈(프록시)이 생성되고, memberController는 가짜 memberService(프록시)를, memberService는 <br>
+  가짜 memberRepository(프록시)를 호출
