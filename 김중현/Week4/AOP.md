@@ -98,6 +98,8 @@ public class TimeTraceAop { //시간 측정 로직 작성
 <img width="575" alt="스크린샷 2022-05-03 오후 5 55 51" src="https://user-images.githubusercontent.com/80838501/166427693-1c589235-fcd9-4883-a1f5-3eac696cd704.png">
 
 → 의존관계에 따라 호출
+<br>
+<br>
 
 - AOP 적용 후 
 <img width="575" alt="스크린샷 2022-05-03 오후 5 56 20" src="https://user-images.githubusercontent.com/80838501/166427708-e30f6f32-9785-4cc3-afbd-c032d195a7f5.png">
