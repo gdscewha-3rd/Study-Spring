@@ -9,13 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    @Autowired
-    public MemberService(MemberRepository memberRepository){
+    //생성자 주입 (추천!)
+   public MemberService(MemberRepository memberRepository){
         this.memberRepository = memberRepository; //서비스 입장에서, 외부에서 리포지토리를 넣어줌
     }
 
