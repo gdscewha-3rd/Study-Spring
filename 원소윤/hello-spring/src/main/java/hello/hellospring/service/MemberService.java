@@ -9,7 +9,11 @@ import java.util.Optional;
 
 public class MemberService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository){
+        this.memberRepository = memberRepository; //서비스 입장에서, 외부에서 리포지토리를 넣어줌
+    }
 
     //회원 가입
     public long join (Member member){
@@ -31,7 +35,7 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Optional<Member> fineOne(Long memberId){
+    public Optional<Member> findOne(Long memberId){
         return memberRepository.findById(memberId);
     }
 
