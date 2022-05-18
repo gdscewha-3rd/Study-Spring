@@ -1,4 +1,4 @@
-## Section 5. 회원 관리 제_웹 MVC 개발
+## Section 5. 회원 관리 예제_웹 MVC 개발
 ### 회원 웹 기능_홈 화면 추가
 **hello.hellospring/controller/HomeController**
 ```java
