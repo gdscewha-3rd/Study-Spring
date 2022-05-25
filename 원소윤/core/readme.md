@@ -20,3 +20,7 @@ https://quirky-longship-bd7.notion.site/5-1-71c3f4fac5e642dfa8cda365508cf97e
 ## 6주차
 ### [핵심원리] 섹션 2
 https://quirky-longship-bd7.notion.site/6-2-eca4d401f0614215a9ed6cee73f33e3e  
+
+## 7주차
+### [핵심원리] 섹션 3
+https://quirky-longship-bd7.notion.site/7-3-bc451dab7aae405d889091651a93c0f5 
