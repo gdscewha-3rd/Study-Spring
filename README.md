@@ -21,12 +21,12 @@
 | 3주차 | 22.04.13  | [입문] 섹션 6 | 원소윤 |[3주차](https://gdscewha.tistory.com/entry/3%EC%A3%BC%EC%B0%A8-%EC%8A%A4%ED%94%84%EB%A7%81-DB-%EC%A0%91%EA%B7%BC-%EA%B8%B0%EC%88%A0?category=1006796)
 | 4주차 | 22.05.04 | [입문] 섹션 7, 8 <br>[핵심원리] 섹션 0 | 윤하은 |[4주차](https://gdscewha.tistory.com/entry/4%EC%A3%BC%EC%B0%A8-AOP?category=1006796)
 | 5주차 | 22.05.11 | [핵심원리] 섹션 1 | 이은빈 |[5주차](https://gdscewha.tistory.com/entry/5%EC%A3%BC%EC%B0%A8-%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%EC%84%A4%EA%B3%84%EC%99%80-%EC%8A%A4%ED%94%84%EB%A7%81)|
-| 6주차 | 22.05.18 | [핵심원리] 섹션 2 | 김중현 |
+| 6주차 | 22.05.18 | [핵심원리] 섹션 2 | 김중현 | [6주차](https://gdscewha.tistory.com/entry/6%EC%A3%BC%EC%B0%A8-%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EC%9D%B4%ED%95%B41-%EC%98%88%EC%A0%9C-%EB%A7%8C%EB%93%A4%EA%B8%B0?category=1006796)
 | 7주차 | 22.05.25 | [핵심원리] 섹션 3 | 배수현 |
 | 8주차 | 22.06.01 | [핵심원리] 섹션 4 | 배수현 |
 | 9주차 |  | [핵심원리] 섹션 5 | 최설화 |
 | 10주차 |  | [핵심원리] 섹션 6, 섹션 7-1강 | 고가형 |
-| 11주차 |  | [핵심원리] 섹션 7-2강 ~  | 김선영 |
+| 11주차 |  | [핵심원리] 섹션 7-2강 ~  | 윤하은 |
 | 12주차 |  | [핵심원리] 섹션 8, 9 | 원소윤 |
 
 <br>
