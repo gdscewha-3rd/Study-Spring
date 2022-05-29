@@ -14,7 +14,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration //애플리케이션의 설정 정보
 public class AppConfig {
 
-    @Bean
+    @Bean //스프링 컨테이너가 @Bean 붙은 것을 하나씩 보고 호출 함
+    // memberService라는 메소드 이름을 키로 가지고
+    // return 한 반환 값을 빈 객체로 등록을 함
+    // 이런 정보가 담겨있는 것을 스프링 빈이라고 함
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository()); //생성자 주입
     }
