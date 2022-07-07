@@ -34,9 +34,9 @@ https://quirky-longship-bd7.notion.site/8-4-c3737f28865a4997b490e51d1f9e3d23
 https://quirky-longship-bd7.notion.site/9-5-dcbcdb93422448758ed211662b22d6a5
 
 ## 10주차
-### [핵심원리] 섹션 6, 7 (일부)
+### [핵심원리] 섹션 6
 https://quirky-longship-bd7.notion.site/10-6-7-d12affb27e14446a89bd44ad3791e331
 
 ## 11주차
-### [핵심원리] 섹션 7
+### [핵심원리] 섹션 7, 8, 9
 https://quirky-longship-bd7.notion.site/11-7-f097a843ce0d40b2a91a41c24c65d5ab
