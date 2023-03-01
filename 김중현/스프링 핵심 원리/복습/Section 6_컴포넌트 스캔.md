@@ -1,0 +1,1 @@
+- [Section 6. 컴포넌트 스캔]( https://thunder-animantarx-b6f.notion.site/e0df35b26f6c4c2b91cc6a4a748d45f0 )
